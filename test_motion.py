@@ -14,6 +14,18 @@ def init_arm():
     move_arm_joints(joints)
     print("Arm location initialized")
 
+def return_joints():
+    msg = rospy.wait_for_message('joint_states', JointState)
+
+    joints = msg.position[2:10]
+
+    while len(joints) < 8:
+        msg = rospy.wait_for_message('joint_states', JointState)
+
+        joints = msg.position[2:10]
+
+    return joints
+
 def main():
     rospy.init_node('test_motion')
 
@@ -23,10 +35,7 @@ def main():
     # print('Position-> ', pos)
     # print('Orientation [deg] --> ', [np.degrees(i) for i in ort])
 
-    msg = rospy.wait_for_message('joint_states', JointState)
-
-    joints = msg.position[2:10]
-
+    joints = return_joints()
     print(joints)
 
 if __name__ == '__main__':
