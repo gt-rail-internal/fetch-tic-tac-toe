@@ -3,6 +3,7 @@
 # simple_disco.py: Move the fetch arm through a simple disco motion
 import sys
 
+import tf
 import rospy
 import moveit_commander
 import moveit_msgs.msg
@@ -34,7 +35,15 @@ def move_arm_joints(joints):
     return
 
 def get_pose():
-    return move_group_ik.get_current_pose(end_effector_link="wrist_roll_link")
+    msg = move_group_ik.get_current_pose(end_effector_link="wrist_roll_link")
+
+    # Extract position
+    pos = [msg.position.x, msg.position.y, msg.position.z]
+
+    # Obtain euler orientation by extracting quaternion and converting
+    ort = tf.transformations.euler_from_quaternion([msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w])
+
+    return pos, ort
 
 # moves the end effector of Fetch to a specified x/y/z location and at a specified a/b/c/w quaternion
 def move_arm_ik(x, y, z, a, b, c, w):

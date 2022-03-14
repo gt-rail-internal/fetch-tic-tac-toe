@@ -1,5 +1,7 @@
 from math import pi
 
+import numpy as np
+
 from motion import *
 
 def init_arm():
@@ -16,7 +18,9 @@ def main():
 
     init_arm()
 
-    print(get_pose())
+    pos, ort = get_pose()
+    print('Position-> ', pos)
+    print('Orientation [deg] --> ', [np.degrees(i) for i in ort])
 
 if __name__ == '__main__':
         main()
