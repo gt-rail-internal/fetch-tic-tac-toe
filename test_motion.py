@@ -25,7 +25,7 @@ def main():
 
     msg = rospy.wait_for_message('joint_states', JointState)
 
-    joints = msg.positions[2:10]
+    joints = msg.position[2:10]
 
     print(joints)
 
