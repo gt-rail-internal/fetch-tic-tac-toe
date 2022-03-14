@@ -12,7 +12,7 @@ def init_arm():
     print("Arm location initialized")
 
 def main():
-    rospy.init_node('Test motion')
+    rospy.init_node('test_motion')
 
     init_arm()
 
