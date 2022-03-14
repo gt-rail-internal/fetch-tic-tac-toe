@@ -24,12 +24,9 @@ def main():
 
     move_arm_joints(joint_1)
 
-    # raw_input('Next?')
+    raw_input('Next?')
 
     move_arm_joints(joint_2)
-
-    joints = return_joints()
-    print(joints)
 
 if __name__ == '__main__':
         main()
