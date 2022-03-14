@@ -16,5 +16,7 @@ def main():
 
     init_arm()
 
+    print(get_pose())
+
 if __name__ == '__main__':
         main()

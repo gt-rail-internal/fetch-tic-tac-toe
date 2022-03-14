@@ -36,6 +36,9 @@ def move_arm_joints(joints):
     move_group_joints.moveToJointPosition(joint_names, joints, wait=True)
     return
 
+def get_pose():
+    return move_group_ik.get_current_pose(end_effector_link="wrist_roll_link")
+
 # moves the end effector of Fetch to a specified x/y/z location and at a specified a/b/c/w quaternion
 def move_arm_ik(x, y, z, a, b, c, w):
     # create the pose goal object
