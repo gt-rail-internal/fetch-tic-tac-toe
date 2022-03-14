@@ -7,12 +7,10 @@ JIDXS = [2, 6, 7, 8, 9, 10, 11, 12]
 def return_joints():
     msg = rospy.wait_for_message('joint_states', JointState)
 
-    joints = [msg.position[i] for i in JIDXS]
-
-    while len(joints) < 8:
+    while len(msg.position) < 13:
         msg = rospy.wait_for_message('joint_states', JointState)
 
-        joints = [msg.position[i] for i in JIDXS]
+    joints = [msg.position[i] for i in JIDXS]
 
     return joints
 
