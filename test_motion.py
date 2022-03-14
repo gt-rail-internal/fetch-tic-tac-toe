@@ -12,6 +12,8 @@ def init_arm():
     print("Arm location initialized")
 
 def main():
+    rospy.init_node('Test motion')
+
     init_arm()
 
 if __name__ == '__main__':
