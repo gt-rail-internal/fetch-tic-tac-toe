@@ -10,7 +10,7 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 
 import actionlib
-import control_msgs.msg 
+from control_msgs.msg import GripperCommandGoal 
 
 from moveit_msgs.msg import MoveItErrorCodes
 from moveit_python import MoveGroupInterface, PlanningSceneInterface
@@ -75,7 +75,7 @@ def move_gripper(w):
     client.wait_for_server()
 
     # create the gripper goal object
-    gripper_goal = control_msgs.msg.GripperCommandGoal()
+    gripper_goal = GripperCommandGoal()
     gripper_goal.command.position = w
     gripper_goal.command.max_effort = 100
 
