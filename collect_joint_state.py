@@ -1,0 +1,20 @@
+import rospy
+from sensor_msgs.msg import JointState
+
+JIDXS = [2, 6, 7, 8, 9, 10, 11, 12]
+
+
+def return_joints():
+    msg = rospy.wait_for_message('joint_states', JointState)
+
+    joints = [msg.position[i] for i in JIDXS]
+
+    while len(joints) < 8:
+        msg = rospy.wait_for_message('joint_states', JointState)
+
+        joints = [msg.position[i] for i in JIDXS]
+
+    return joints
+
+if __name__ == '__main__':
+        print(return_joints())
