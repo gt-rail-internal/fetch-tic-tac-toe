@@ -17,4 +17,6 @@ def return_joints():
     return joints
 
 if __name__ == '__main__':
+        rospy.init_node('collect_joint_state')
+
         print(return_joints())
