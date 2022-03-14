@@ -77,7 +77,7 @@ def move_gripper(w):
     # create the gripper goal object
     gripper_goal = control_msgs.msg.GripperCommandGoal()
     gripper_goal.command.position = w
-    gripper_goal.command.effort = 100
+    gripper_goal.command.max_effort = 100
 
     # send the gripper goal
     client.send_goal(gripper_goal)
