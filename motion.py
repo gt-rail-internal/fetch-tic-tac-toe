@@ -73,11 +73,12 @@ def move_arm_ik(x, y, z, a, b, c, w):
 def move_gripper(w):
     # ensure connection to the client
     client.wait_for_server()
+    print('Client active')
 
     # create the gripper goal object
     gripper_goal = GripperCommandGoal()
     gripper_goal.command.position = w
-    gripper_goal.command.max_effort = 100
+    gripper_goal.command.max_effort = -1
 
     # send the gripper goal
     client.send_goal(gripper_goal)
