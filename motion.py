@@ -10,7 +10,7 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 
 import actionlib
-from control_msgs.msg import GripperCommandGoal 
+from control_msgs.msg import GripperCommandGoal, GripperCommandAction
 
 from moveit_msgs.msg import MoveItErrorCodes
 from moveit_python import MoveGroupInterface, PlanningSceneInterface
