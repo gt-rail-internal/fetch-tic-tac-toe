@@ -2,6 +2,7 @@ from math import pi
 
 import numpy as np
 
+from sensor_msgs.msg import JointState
 from motion import *
 
 def init_arm():
@@ -16,13 +17,17 @@ def init_arm():
 def main():
     rospy.init_node('test_motion')
 
-    init_arm()
+    # init_arm()
 
-    pos, ort = get_pose(link="wrist_roll_link")
-    print('Position-> ', pos)
-    print('Orientation [deg] --> ', [np.degrees(i) for i in ort])
+    # pos, ort = get_pose(link="wrist_roll_link")
+    # print('Position-> ', pos)
+    # print('Orientation [deg] --> ', [np.degrees(i) for i in ort])
 
-    move_arm_ik()
+    msg = rospy.wait_for_message('joint_states', JointState)
+
+    joints = msg.positions[2:10]
+
+    print(joints)
 
 if __name__ == '__main__':
         main()
