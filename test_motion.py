@@ -5,6 +5,8 @@ import numpy as np
 from sensor_msgs.msg import JointState
 from motion import *
 
+JIDXS = [2, 6, 7, 8, 9, 10, 11, 12]
+
 def init_arm():
     #joints = [2.9803242683410645, -1.5093436805688476, -0.4041502734541504, -1.129718886820984,-1.4648575595581055, 1.9692782062088012, 2.017528761517334, 0.6389203225610351]
     
@@ -17,12 +19,12 @@ def init_arm():
 def return_joints():
     msg = rospy.wait_for_message('joint_states', JointState)
 
-    joints = msg.position[2:10]
+    joints = msg.position[JIDXS]
 
     while len(joints) < 8:
         msg = rospy.wait_for_message('joint_states', JointState)
 
-        joints = msg.position[2:10]
+        joints = msg.position[JIDXS]
 
     return joints
 
