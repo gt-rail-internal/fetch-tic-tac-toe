@@ -34,8 +34,8 @@ def move_arm_joints(joints):
     move_group_joints.moveToJointPosition(joint_names, joints, wait=True)
     return
 
-def get_pose():
-    msg = move_group_ik.get_current_pose(end_effector_link="wrist_roll_link")
+def get_pose(link="wrist_roll_link"):
+    msg = move_group_ik.get_current_pose(end_effector_link=link)
 
     # Extract position
     pos = [msg.pose.position.x, msg.pose.position.y, msg.pose.position.z]

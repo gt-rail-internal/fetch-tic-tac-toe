@@ -18,9 +18,11 @@ def main():
 
     init_arm()
 
-    pos, ort = get_pose()
+    pos, ort = get_pose(link="wrist_roll_link")
     print('Position-> ', pos)
     print('Orientation [deg] --> ', [np.degrees(i) for i in ort])
+
+    move_arm_ik()
 
 if __name__ == '__main__':
         main()
