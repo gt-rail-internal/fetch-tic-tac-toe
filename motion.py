@@ -22,7 +22,7 @@ group_name = "arm_with_torso"
 move_group_ik = None
 
 # connect to the gripper controller client
-client = actionlib.SimpleActionClient('gripper_controller', control_msgs.msg.GripperCommandAction)
+client = actionlib.SimpleActionClient('gripper_controller', GripperCommandAction)
 moveit_commander.roscpp_initialize("")  # init the MoveIt commander
 robot = moveit_commander.RobotCommander()  # init the robot
 scene = moveit_commander.PlanningSceneInterface()  # init the planning scene
