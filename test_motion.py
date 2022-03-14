@@ -19,12 +19,12 @@ def init_arm():
 def return_joints():
     msg = rospy.wait_for_message('joint_states', JointState)
 
-    joints = msg.position[JIDXS]
+    joints = [msg.position[i] for i in JIDXS]
 
     while len(joints) < 8:
         msg = rospy.wait_for_message('joint_states', JointState)
 
-        joints = msg.position[JIDXS]
+        joints = [msg.position[i] for i in JIDXS]
 
     return joints
 
