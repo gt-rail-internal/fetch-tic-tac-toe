@@ -38,10 +38,10 @@ def get_pose():
     msg = move_group_ik.get_current_pose(end_effector_link="wrist_roll_link")
 
     # Extract position
-    pos = [msg.position.x, msg.position.y, msg.position.z]
+    pos = [msg.pose.position.x, msg.pose.position.y, msg.pose.position.z]
 
     # Obtain euler orientation by extracting quaternion and converting
-    ort = tf.transformations.euler_from_quaternion([msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w])
+    ort = tf.transformations.euler_from_quaternion([msg.pose.orientation.x, msg.pose.orientation.y, msg.pose.orientation.z, msg.pose.orientation.w])
 
     return pos, ort
 
