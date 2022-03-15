@@ -18,7 +18,7 @@ def goto(joint):
 
     move_arm_joints(joint)
 
-    rospy.sleep(3)
+    rospy.sleep(1.5)
 
     rospy.loginfo('Moved to point')
 
@@ -41,20 +41,22 @@ def main():
     p00_overhead = [0.3704706132411957, -0.19364934844604492, -0.9889805575728028, 0.2002424875810623, 1.456992644909668, -0.13457649471416472, 1.099057425152588, 0.18256101062274932]
     p00_place = [0.36982211470603943, -0.20208626670471191, -0.9893639346479981, 0.20062598386554717, 1.722371120098877, -0.13534347983255385, 0.7623488794677734, 0.18102704038597106]
 
-    '''
+    move_gripper(1)
+    rospy.sleep(1)
     goto(pickup)
+    move_gripper(0)
     goto(stall)
     goto(p00_overhead)
     goto(p00_place)
-    '''
+    move_gripper(1)
 
+    '''
+    # Testing gripper 
     move_gripper(0)
     print('closed')
-    for i in range(5):
-        rospy.sleep(1)
-        print('sleep')
+
     move_gripper(1)
     print('open')
-
+    '''
 if __name__ == '__main__':
         main()
