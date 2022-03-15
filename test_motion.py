@@ -53,7 +53,7 @@ def main():
     for i in range(5):
         rospy.sleep(1)
         print('sleep')
-    move_gripper(100)
+    move_gripper(1)
     print('open')
 
 if __name__ == '__main__':
