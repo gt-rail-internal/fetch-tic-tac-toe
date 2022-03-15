@@ -22,7 +22,7 @@ group_name = "arm_with_torso"
 move_group_ik = None
 
 # connect to the gripper controller client
-client = actionlib.SimpleActionClient('gripper_controller', GripperCommandAction)
+client = actionlib.SimpleActionClient('gripper_controller/gripper_action', GripperCommandAction)
 moveit_commander.roscpp_initialize("")  # init the MoveIt commander
 robot = moveit_commander.RobotCommander()  # init the robot
 scene = moveit_commander.PlanningSceneInterface()  # init the planning scene
@@ -71,6 +71,12 @@ def move_arm_ik(x, y, z, a, b, c, w):
 
 # sets the gripper width
 def move_gripper(w):
+    '''
+    Function to move gripper. Inputs are
+        w = 0: closes the gripper
+        w = 1: opens the gripper
+    '''
+
     # ensure connection to the client
     client.wait_for_server()
     print('Client active')
@@ -78,7 +84,7 @@ def move_gripper(w):
     # create the gripper goal object
     gripper_goal = GripperCommandGoal()
     gripper_goal.command.position = w
-    gripper_goal.command.max_effort = -1
+    gripper_goal.command.max_effort = 200
 
     # send the gripper goal
     client.send_goal(gripper_goal)
