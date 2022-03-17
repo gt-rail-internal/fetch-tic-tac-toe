@@ -15,34 +15,50 @@ stall- [0.37060031294822693, -0.6419552533113098, -1.0280969401716797, 0.2006259
 '''
 
 pickup = [0.3707147538661957, -0.6427222458802795, -0.2488348742842285, 0.19985899129657744, 0.3433222957885742, -0.24732408942832945, 1.2769992243164063, 0.18256101062274932]
-stall = [0.37060031294822693, -0.6419552533113098, -1.0280969401716797, 0.20062598386554717, 1.016356486920166, -0.13457649471416472, 1.4967419992797852, 0.18141053667045592]
+home = [0.37060031294822693, -0.6419552533113098, -1.0280969401716797, 0.20062598386554717, 1.016356486920166, -0.13457649471416472, 1.4967419992797852, 0.18141053667045592]
 
+hover_joints = {
+    '0': [],
+    '1': [],
+    '2': [],
+    '3': [],
+    '4': [],
+    '5': [],
+    '6': [],
+    '7': [],
+    '8': [],
+}
+
+goal_joints = {
+    '0': [],
+    '1': [],
+    '2': [],
+    '3': [],
+    '4': [],
+    '5': [],
+    '6': [],
+    '7': [],
+    '8': [],
+}
 
 
 def pick_and_place(x, y):
 
-    # Take robot to stall position 
-    go_to_joint(stall)
+    go_to_joint(home)   # Take robot to home position 
 
-    # Gripper: open
-    move_gripper(1)
-    rospy.sleep(1)
+    move_gripper(1)     # Gripper: open
 
-    # Go to X
-    go_to_joint(pickup)
+    go_to_joint(pickup) # Go to X
 
     # Gripper: closed (picking up X)
     print('Picking up X')
     move_gripper(0)
 
-    # Return to stall position (init position)
-    go_to_joint(stall)
+    go_to_joint(home)   # Back to home position
 
-    # Hover above goal position
-    go_to_joint(x)
+    go_to_joint(x)      # Hover above goal position
 
-    # Go to goal position
-    go_to_joint(y)
+    go_to_joint(y)      # Go to goal position
 
     # Gripper: open (drop X)
     print('Releasing X')
