@@ -18,49 +18,33 @@ pickup = [0.3707147538661957, -0.6427222458802795, -0.2488348742842285, 0.199858
 stall = [0.37060031294822693, -0.6419552533113098, -1.0280969401716797, 0.20062598386554717, 1.016356486920166, -0.13457649471416472, 1.4967419992797852, 0.18141053667045592]
 
 
-def goto(joint):
-    joint[0] = 0.37
-
-    move_arm_joints(joint)
-
-    rospy.sleep(1)
-
-    rospy.loginfo('Moved to point')
-
-def init_arm():
-    #joints = [2.9803242683410645, -1.5093436805688476, -0.4041502734541504, -1.129718886820984,-1.4648575595581055, 1.9692782062088012, 2.017528761517334, 0.6389203225610351]
-    
-    # init forward right near 0,1
-    joints = [0.37060031294822693, -0.6419552533113098, -1.0280969401716797, 0.20062598386554717, 1.016356486920166, -0.13457649471416472, 1.4967419992797852, 0.18141053667045592]
-    
-    goto(joints)
-    print("Arm location initialized")
-
 def pick_and_place(x, y):
 
     # Take robot to stall position 
-    init_arm()
+    go_to_joint(stall)
 
     # Gripper: open
     move_gripper(1)
     rospy.sleep(1)
 
     # Go to X
-    goto(pickup)
+    go_to_joint(pickup)
 
     # Gripper: closed (picking up X)
+    print('Picking up X')
     move_gripper(0)
 
     # Return to stall position (init position)
-    goto(stall)
+    go_to_joint(stall)
 
     # Hover above goal position
-    goto(x)
+    go_to_joint(x)
 
     # Go to goal position
-    goto(y)
+    go_to_joint(y)
 
     # Gripper: open (drop X)
+    print('Releasing X')
     move_gripper(1)
 
     return

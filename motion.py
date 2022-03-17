@@ -92,3 +92,13 @@ def move_gripper(w):
     # wait for the gripper
     client.wait_for_result()  
     return
+
+def go_to_joint(joint):
+    # Torso lift stays fixed
+    joint[0] = 0.37
+
+    # Go to joint position
+    move_arm_joints(joint)
+    rospy.sleep(1)
+
+    return
