@@ -37,15 +37,33 @@ def init_arm():
     print("Arm location initialized")
 
 def pick_and_place(x, y):
+
+    # Take robot to stall position 
     init_arm()
+
+    # Gripper: open
     move_gripper(1)
     rospy.sleep(1)
+
+    # Go to X
     goto(pickup)
+
+    # Gripper: closed (picking up X)
     move_gripper(0)
+
+    # Return to stall position (init position)
     goto(stall)
+
+    # Hover above goal position
     goto(x)
+
+    # Go to goal position
     goto(y)
+
+    # Gripper: open (drop X)
     move_gripper(1)
+
+    return
 
 def main():
     rospy.init_node('test_motion')
