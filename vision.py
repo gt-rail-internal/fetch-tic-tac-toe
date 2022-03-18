@@ -1,0 +1,147 @@
+#! /usr/bin/env python
+
+import yaml
+from copy import deepcopy
+
+import cv2
+import numpy as np
+
+import rospy
+from sensor_msgs.msg import Image
+from std_msgs.msg import String
+from std_msgs.msg import Int32MultiArray
+from cv_bridge import CvBridge, CvBridgeError
+import requests
+
+#if it's helpful: ssh fetch@10.65.172.2
+# password: robotics
+
+# class ArucoMarker:
+
+#     def __init__(self, params):
+#         self.params = params
+
+#         marker_dict = eval(params['marker_dict'])
+
+#         self.arucoDict = cv2.aruco.Dictionary_get(marker_dict)
+#         self.arucoParams = cv2.aruco.DetectorParameters_create()
+#         self.bridge = CvBridge()
+
+#     def join(self, a, delim):
+#         if len(a) == 0:
+#             return
+#         string = str(a[0])
+#         for i in a[1:]:
+#             string += str(delim) + str(i)
+#         return string
+
+# 	#CHANGETHIS: detect with CV should identify not Aruco markers, but the grid with its X's and O's
+#     def detect(self, cv2_img):
+#         H, W, _ = cv2_img.shape
+
+#         # Detect markers from image using CV2
+#         (corners, tracked_ids, _) = cv2.aruco.detectMarkers(cv2_img, self.arucoDict)
+        
+#         # if no markers were found, return empty array
+#         if tracked_ids is None or len(corners) != 10:
+#             if tracked_ids is None:
+#                 print("No tracked IDs found")
+#                 server_result = []
+#             else:
+#                 print "Only " + str(len(tracked_ids.tolist())) + " IDs found"
+#                 server_result = [x[0] for x in tracked_ids.tolist()]
+#             # publish the data to the server
+#             try:
+#                 requests.get("http://localhost:5000/set_markers", params={"markers": self.join(server_result, ',')})
+#             except requests.exceptions.ConnectionError:
+#                 pass
+#             return []
+
+#         # publish the data to the server
+#         server_result = [x[0] for x in tracked_ids.tolist()]
+#         try:
+#             requests.get("http://localhost:5000/set_markers", params={"markers": self.join(server_result, ',')})
+#         except requests.exceptions.ConnectionError:
+#             pass
+
+#         # For each corner, first value is y measured from left to right and 
+#         # second value is x measured top to bottom
+
+#         marker_tuples = []
+
+#         for c, arid in zip(corners, tracked_ids):
+#             # Check if the detected marker belongs to the list of known markers
+#             if arid in self.params['marker_ids']:
+#                 corner_coord = c[0, 0]  # corner_coord[0] is x, corner_coord[1] is y
+#                 marker_tuples.append((arid[0], corner_coord[0], corner_coord[1]))
+
+#         # sorting function
+#         mean_y = sum([x[2] for x in marker_tuples]) / len(marker_tuples)  # get the mean y value
+#         upper_row = [x for x in marker_tuples if x[2] > mean_y]  # split items into upper and lower rows
+#         lower_row = [x for x in marker_tuples if x[2] < mean_y]
+        
+#         # sort both by x
+#         upper_row.sort(key = lambda x: x[1])
+#         lower_row.sort(key = lambda x: x[1])
+        
+#         if len(upper_row) != len(lower_row):
+#             print "Upper row has " + str(len(upper_row)) + " while lower row has " + str(len(lower_row))
+#             return []
+        
+#         # combine the lists elementwise
+#         result = []
+#         for i in reversed(range(len(upper_row))):
+#             result.append(upper_row[i])
+#             result.append(lower_row[i])
+            
+#         return [t[0] for t in result]  # return only the IDs
+
+#     def detect_markers_from_rostopic(self):
+#         # Fetch image from rostopic
+#         msg = rospy.wait_for_message(self.params['image_topic'], Image)
+        
+#         # Ros msg to cv image
+#         try:
+#             cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+#         except CvBridgeError as e:
+#             print(e)
+
+#         return self.detect(cv_image)
+
+def main():
+    # init the ROS node
+    rospy.init_node('vision_node')
+
+    
+
+    # with open('./marker_config/ARMarker.yaml', 'r') as f:
+    #     params = yaml.safe_load(f)
+
+    # ardetector = ArucoMarker(params)
+
+	# # CHANGETHIS: not markers publisher, game state publisher
+    # markers_publisher = rospy.Publisher('/markers', Int32MultiArray, queue_size=10)
+    
+    # keep detecting markers and posting to the markers ROS topic
+    while not rospy.is_shutdown():
+
+        #  Fetch image from rostopic
+        msg = rospy.wait_for_message('/head_camera/rgb/image_raw', Image)
+        
+        # Ros msg to cv image
+        try:
+            cv_image = CvBridge().imgmsg_to_cv2(msg, "bgr8")
+            print("yay")
+            # Cool! So, we've gotten this far. We are now importing images; now what do we want to do with them?
+            # I'd like to see them, first of all. Then I can tell if I'm giving it anything useful. Can make a tic-tac-toe board right here, right now (laser-cut?)
+            # Then can start exploring options in OpenCV for processing them. Woot.
+
+            
+        except CvBridgeError as e:
+            print(e)
+
+    rospy.spin()
+
+
+if __name__ == '__main__':
+    main()
