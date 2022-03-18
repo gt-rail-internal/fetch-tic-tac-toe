@@ -26,7 +26,7 @@ class GameEnv:
 
     def next_board_state(self, action):
         # get the next board state, but don't actually transit to it!
-        backup_states = [self.board_state.copy(), self.h_score, self.r_score]
+        backup_states = [[x for x in self.board_state], self.h_score, self.r_score]
         next_board_state, _, _ = self.step(action)
         self.board_state, self.h_score, self.r_score = backup_states
         return next_board_state
