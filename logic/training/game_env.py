@@ -2,7 +2,7 @@ from operator import truediv
 import numpy as np
 import reward
 import random
-import training.forwardPass
+import forwardPass
 import pickle
 
 class GameEnv:
@@ -59,7 +59,7 @@ class GameEnv:
             feature_future = self.state_to_feature(self.next_board_state(action))
             # TODO: Insert code here: For each action, test with network and remember the best one
             X = np.array([feature_future]).T  # construct the input
-            theoretical_value = training.forwardPass.forward_pass(self.network, X)  # get the reward value
+            theoretical_value = forwardPass.forward_pass(self.network, X)  # get the reward value
             
             if theoretical_value > best_value:  # keep track of the best action
                 best_value = theoretical_value
@@ -90,7 +90,7 @@ class GameEnv:
 
         new_state[action] = 2  # set to O
 
-        rew = training.reward.eval_reward(new_state)  # get the reward of the new state
+        rew = reward.eval_reward(new_state)  # get the reward of the new state
         
         if rew == 1 or rew == -1:
             done = True
@@ -103,7 +103,7 @@ class GameEnv:
         return self.board_state, rew, done
 
     def get_current_game_state(self):
-        return training.reward.eval_reward(self.board_state)
+        return reward.eval_reward(self.board_state)
 
     @property
     def state(self):
