@@ -1,7 +1,7 @@
 import pickle
 
 from numpy.core.fromnumeric import argmax
-from game_env import GameEnv
+from training.game_env import GameEnv
 import sys
 from createNeuralNet import create_neural_net
 from forwardPass import forward_pass  # Hint: You'll need these two!
