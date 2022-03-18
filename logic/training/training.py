@@ -1,7 +1,7 @@
 import pickle
 
 from numpy.core.fromnumeric import argmax
-from game_env import GameEnv
+import game_env
 import sys
 from createNeuralNet import create_neural_net
 from forwardPass import forward_pass  # Hint: You'll need these two!
@@ -15,7 +15,7 @@ from os.path import exists
 if __name__ == "__main__":
     FEEDBACK = 0.0
     save = True
-    env = GameEnv()
+    env = game_env.GameEnv()
 
     # network hyperparameters
     # TODO: insert code here (Optional) Modify hyperparameters

@@ -1,7 +1,5 @@
-import queue
 import rospy
 from std_msgs.msg import String, Int32MultiArray
-import random
 import training.game_env
 
 env = training.game_env.GameEnv()
