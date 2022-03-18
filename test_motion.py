@@ -72,7 +72,7 @@ def pick_and_place(x, y):
 def main():
     rospy.init_node('test_motion')
 
-    tile = 0
+    tile = str(0)
 
     pick_and_place(hover_joints[tile], goal_joints[tile])
 
