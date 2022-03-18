@@ -1,6 +1,6 @@
 from operator import truediv
 import numpy as np
-import training.reward
+import reward
 import random
 import training.forwardPass
 import pickle
