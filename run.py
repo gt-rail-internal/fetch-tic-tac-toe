@@ -39,8 +39,6 @@ goal_joints = {
 
 def pick_and_place(x, y):
 
-    go_to_joint(home)   # Take robot to home position 
-
     move_gripper(1)     # Gripper: open
 
     go_to_joint(pickup) # Go to X
@@ -61,6 +59,8 @@ def pick_and_place(x, y):
 
     go_to_joint(x)      # Hover above goal position
 
+    go_to_joint(home)   # Take robot to home position 
+
     return
 
 def callback(msg):
@@ -76,7 +76,9 @@ def callback(msg):
 def main():
     rospy.init_node('run_game')
 
-    print('node initialized')
+    print('Node initialized, going home...')
+    go_to_joint(home)   # Take robot to home position 
+
 
     rospy.Subscriber('game_action', String, callback, queue_size=1)
     rospy.spin()
