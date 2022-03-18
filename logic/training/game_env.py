@@ -136,7 +136,7 @@ class GameEnv:
             print(rp)
             # add the bottom border
             if r != 2:
-                print("———————————")
+                print("---------------")
         print()  # print empty space at the end
         return
 
