@@ -1,20 +1,35 @@
+import queue
 import rospy
 from std_msgs.msg import String, Int32MultiArray
 import random
+import training.game_env
 
-
+env = training.game_env.GameEnv()
 GAME_INFO_PUBLISHER = None  # publishes to the /game_info topic
+GAME_ACTION_PUBLISHER = None  # publishes to the /game_action topic
 
 # sends info to the /game_info topic
 def send_info(info):
     print(info)  # print the info to the terminal
     if GAME_INFO_PUBLISHER is not None:  # if possible, publish the info
         GAME_INFO_PUBLISHER.publish(info)
+    else:
+        print("send_info(): could not send info, publisher not initialized.")
+
+
+# sends action to the /game_info topic
+def send_action(action):
+    print(action)  # print the info to the terminal
+    if GAME_ACTION_PUBLISHER is not None:  # if possible, publish the info
+        GAME_ACTION_PUBLISHER.publish(action)
+    else:
+        print("send_action(): could not send action, publisher not initialized.")
 
 
 # read the game state int32[] and process what that means
 def read_state(data):
-    state = data.data  # get states
+    state = list(data.data)  # get states
+    print("Received State", state)
 
     # check if states has correct dimensions
     if len(state) != 9:
@@ -38,26 +53,29 @@ def read_state(data):
          
     # it's the robot's turn -- decide where to go
     move = select_move(state)
+    send_action(str(move))  # send the action to the /game_action topic
 
 
 # choose the next move given a game state
 def select_move(state):
-    # for now, choose random move
-    open_slots = [i for i in range(len(state)) if state[i] == 0]
-    move = random.sample(open_slots)
-    print(move)
-
-print(select_move([0, 0, 0, 1, 2, 3]))
+    # set the board state
+    env.board_state = state
+    move = env.get_best_robot_move()
+    print("Robot chooses to go", move)
+    return move
 
 
 # sets up the node and waits for program to exit
 def state_reader():
-    rospy.init_node('listener', anonymous=True)  # initialize node 
+    rospy.init_node('game_logic', anonymous=True)  # initialize node 
 
     global GAME_INFO_PUBLISHER  # set up the publisher to /game_info
-    GAME_INFO_PUBLISHER = rospy.Publisher('game_info', String)
+    GAME_INFO_PUBLISHER = rospy.Publisher('game_info', String, queue_size=1)
 
-    subscriber = rospy.Subscriber('game_state', Int32MultiArray, read_state)  # set up the subscriber to /game_state
+    global GAME_ACTION_PUBLISHER  # set up the publisher to /game_action
+    GAME_ACTION_PUBLISHER = rospy.Publisher('game_action', String, queue_size=1)
+
+    rospy.Subscriber('game_state', Int32MultiArray, read_state)  # set up the subscriber to /game_state
     rospy.spin()  # wait for program to exit
 
 
