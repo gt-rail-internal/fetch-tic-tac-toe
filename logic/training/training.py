@@ -15,7 +15,7 @@ from os.path import exists
 if __name__ == "__main__":
     FEEDBACK = 0.0
     save = True
-    env = GameEnv()
+    env = game_env.GameEnv()
 
     # network hyperparameters
     # TODO: insert code here (Optional) Modify hyperparameters
