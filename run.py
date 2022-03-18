@@ -3,6 +3,7 @@ from math import pi
 import numpy as np
 
 from sensor_msgs.msg import JointState
+from std_msgs.msg import String
 from motion import *
 
 #TODO: Hover joints for 8, 7, 5, 4 need to be updated
@@ -62,12 +63,24 @@ def pick_and_place(x, y):
 
     return
 
+def callback(msg):
+    tile = msg.data
+
+    if tile in hover_joints.keys():
+        print('Going to {}'.format(tile))
+        pick_and_place(hover_joints[tile], goal_joints[tile])
+
+    else:
+        raise KeyError
+
 def main():
-    rospy.init_node('test_motion')
+    rospy.init_node('run_game')
 
-    tile = str(0)
+    rospy.Subscriber('game_action', String, callback, queue_size=1)
+    rospy.spin()
 
-    pick_and_place(hover_joints[tile], goal_joints[tile])
+    # tile = str(0)
+    # pick_and_place(hover_joints[tile], goal_joints[tile])
 
 if __name__ == '__main__':
-        main()
+    main()
