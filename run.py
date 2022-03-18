@@ -75,17 +75,17 @@ def callback(msg):
         raise KeyError
 
 def main():
-    rospy.init_node('run_game')
+    # rospy.init_node('run_game')
 
-    print('Node initialized, going home...')
-    go_to_joint(home)   # Take robot to home position 
+    # print('Node initialized, going home...')
+    # go_to_joint(home)   # Take robot to home position 
 
 
-    rospy.Subscriber('game_action', String, callback, queue_size=1)
-    rospy.spin()
+    # rospy.Subscriber('game_action', String, callback, queue_size=1)
+    # rospy.spin()
 
-    # tile = str(0)
-    # pick_and_place(hover_joints[tile], goal_joints[tile])
+    tile = str(0)
+    pick_and_place(hover_joints[tile], goal_joints[tile])
 
 if __name__ == '__main__':
     main()
