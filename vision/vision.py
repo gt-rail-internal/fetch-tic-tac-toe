@@ -31,32 +31,35 @@ def process_image(img):
     locations = cv2.KeyPoint_convert(keypoints)
 
     empty_locations = locations
+    print("empty", empty_locations)
 
-    # ISOLATE RED CIRCLES, O LOCATIONS
+    # ISOLATE BLUE X, X LOCATIONS
     # threshold the HSV
-    low_H = 0
+    low_H = 70
     low_S = 0
     low_V = 0
-    high_H = 5
-    high_S = 200
+    high_H = 255
+    high_S = 255
     high_V = 255
     
-    img_red = cv2.inRange(img, (low_H, low_S, low_V), (high_H, high_S, high_V))
-    cv2.imshow("red", img_red)
+    img_blue = cv2.inRange(img, (low_H, low_S, low_V), (high_H, high_S, high_V))
+    
     # decay, expand
     kernel = np.ones((5,5), np.uint8)
-    img_red = cv2.erode(img_red, kernel, iterations=2)
-    img_red = cv2.dilate(img_red, kernel, iterations=4)
+    img_blue = cv2.erode(img_blue, kernel, iterations=2)
+    img_blue = cv2.dilate(img_blue, kernel, iterations=4)
 
     # find blobs
-    img_red = cv2.bitwise_not(img_red)
+    img_blue = cv2.bitwise_not(img_blue)
+    img_blue = cv2.blur(img_blue, ksize=(5,5))
     detector = cv2.SimpleBlobDetector_create()
-    keypoints = detector.detect(img_red)
+    keypoints = detector.detect(img_blue)
     locations = cv2.KeyPoint_convert(keypoints)
 
-    o_locations = locations
+    x_locations = locations
+    print("x", x_locations)
 
-    cv2.imwrite("rgb.png", img_red)
+    cv2.imwrite("rgb.png", img_blue)
 
     cv2.imwrite("base.png", img)
 
