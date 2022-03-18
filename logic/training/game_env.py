@@ -82,7 +82,7 @@ class GameEnv:
     def step(self, action):
         done = False
         
-        new_state = self.board_state.copy()
+        new_state = [x for x in self.board_state]
 
         # move the robot's marker to their action
         if new_state[action] != 0:  # check that the action is 0, so safe to move there
