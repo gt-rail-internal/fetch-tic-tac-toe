@@ -76,6 +76,8 @@ def callback(msg):
 def main():
     rospy.init_node('run_game')
 
+    print('node initialized')
+
     rospy.Subscriber('game_action', String, callback, queue_size=1)
     rospy.spin()
 
