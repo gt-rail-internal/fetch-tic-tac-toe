@@ -99,6 +99,6 @@ def go_to_joint(joint):
 
     # Go to joint position
     move_arm_joints(joint)
-    rospy.sleep(1)
+    rospy.sleep(0.75)
 
     return

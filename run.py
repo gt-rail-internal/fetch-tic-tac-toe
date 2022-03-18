@@ -50,17 +50,17 @@ def pick_and_place(x, y):
 
     go_to_joint(home)   # Back to home position
 
-    go_to_joint(x)      # Hover above goal position
+    #go_to_joint(x)      # Hover above goal position
 
-    go_to_joint(y)      # Go to goal position
+    #go_to_joint(y)      # Go to goal position
 
     # Gripper: open (drop X)
     print('Releasing X')
-    move_gripper(1)
+    #move_gripper(1)
 
-    go_to_joint(x)      # Hover above goal position
+    #go_to_joint(x)      # Hover above goal position
 
-    go_to_joint(home)   # Take robot to home position 
+    #go_to_joint(home)   # Take robot to home position 
 
     return
 
@@ -75,16 +75,16 @@ def callback(msg):
         raise KeyError
 
 def main():
-    # rospy.init_node('run_game')
+    rospy.init_node('run_game')
 
-    # print('Node initialized, going home...')
-    # go_to_joint(home)   # Take robot to home position 
+    print('Node initialized, going home...')
+    go_to_joint(home)   # Take robot to home position 
 
 
     # rospy.Subscriber('game_action', String, callback, queue_size=1)
     # rospy.spin()
 
-    tile = str(0)
+    tile = str(2)
     pick_and_place(hover_joints[tile], goal_joints[tile])
 
 if __name__ == '__main__':
