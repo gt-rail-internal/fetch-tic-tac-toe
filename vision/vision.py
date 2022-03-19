@@ -45,18 +45,17 @@ def process_image(img):
     detector = cv2.SimpleBlobDetector_create()
     keypoints = detector.detect(img_black)
     locations = cv2.KeyPoint_convert(keypoints)
-
-    # sort locations top down left right
-    print("locations", locations)
-    locations = locations[np.lexsort((locations[:,1], locations[:,0]))]
-
-    #cv2.imwrite("rgb.png", img_black)
+    
+    
+    cv2.imwrite("img_black.png", img_black)
+    
     # if not two black blobs, error a bit
     if len(locations) != 2:
         print("Not exactly two black blobs", len(locations))
         return []
 
-    
+    # sort locations top down left right
+    locations = locations[np.lexsort((locations[:,1], locations[:,0]))]
 
     #print("side coordinate markers", locations)
 
