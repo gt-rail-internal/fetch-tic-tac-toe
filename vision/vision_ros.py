@@ -4,7 +4,7 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import Int32MultiArray
 from cv_bridge import CvBridge, CvBridgeError
 
-from vision import process_image
+# from vision import process_image
 
 cvBridge = CvBridge()
 
