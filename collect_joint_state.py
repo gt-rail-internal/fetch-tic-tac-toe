@@ -17,7 +17,7 @@ def return_joints(tile, type):
 
     joints = [msg.position[i] for i in JIDXS]
 
-    data = '{}: {}'.format(tile, joints)
+    data = '{}: {},'.format(tile, joints)
 
     write_to_file(data, tile, '{}_joints.txt'.format(type))
 
