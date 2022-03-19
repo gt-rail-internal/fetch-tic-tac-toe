@@ -48,6 +48,10 @@ class GameEnv:
 
     # choose the robot's best action
     def get_best_robot_move(self):
+        # check if game is already won/lost, return -1
+        if reward.eval_reward(self.board_state) in [1, -1]:
+            return -1
+
         best_value = -1e10
         best_action = -1
         # for each action, choose the best

@@ -71,6 +71,19 @@ goal_joints = {
 }
 
 
+GAME_INFO_PUBLISHER = None  # publishes to the /game_info topic
+
+
+# sends info to the /game_info topic
+def send_info(info):
+    print(info)  # print the info to the terminal
+    if GAME_INFO_PUBLISHER is not None:  # if possible, publish the info
+        GAME_INFO_PUBLISHER.publish(info)
+    else:
+        print("send_info(): could not send info, publisher not initialized.")
+
+
+
 def pick_and_place(x, y):
 
     move_gripper(1)     # Gripper: open
@@ -106,12 +119,19 @@ def callback(msg):
 
     else:
         raise KeyError
+    print("done moving")
+    send_info("done moving")
 
 def main():
     rospy.init_node('run_game')
 
+    global GAME_INFO_PUBLISHER  # set up the publisher to /game_info
+    GAME_INFO_PUBLISHER = rospy.Publisher('game_info', String, queue_size=1)
+
     print('Node initialized, going home...')
     go_to_joint(home)   # Take robot to home position 
+    send_info("done moving")
+
 
     rospy.Subscriber('game_action', String, callback, queue_size=1)
     rospy.spin()

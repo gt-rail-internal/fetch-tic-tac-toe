@@ -23,6 +23,10 @@ def callback(msg):
     # Call process_image function
     markers = process_image(cv_image)
 
+    # if markers is empty list [], visuals aren't good, don't set to state
+    if markers == []:
+        return
+
     # ROS message for markers
     msg = Int32MultiArray()
     msg.data = markers

@@ -6,6 +6,9 @@ env = training.game_env.GameEnv()
 GAME_INFO_PUBLISHER = None  # publishes to the /game_info topic
 GAME_ACTION_PUBLISHER = None  # publishes to the /game_action topic
 
+is_moving = False
+game_state = [0, 0, 0, 0, 0, 0, 0, 0]
+
 # sends info to the /game_info topic
 def send_info(info):
     print(info)  # print the info to the terminal
@@ -17,9 +20,15 @@ def send_info(info):
 
 # sends action to the /game_info topic
 def send_action(action):
+    if action == -1:
+        print("game is won, ignoring")
+        return
+
+    global is_moving
     print(action)  # print the info to the terminal
     if GAME_ACTION_PUBLISHER is not None:  # if possible, publish the info
         GAME_ACTION_PUBLISHER.publish(action)
+        is_moving = True
     else:
         print("send_action(): could not send action, publisher not initialized.")
 
@@ -39,20 +48,15 @@ def read_state(data):
         send_info('game_state malformed, has items that are not 0, 1, or 2: ' + str(state))
         return
 
-    # determine turn
-    num_blank = len([x for x in state if x == 0])
-    num_x = len([x for x in state if x == 1])
-    num_o = len([x for x in state if x == 2])
+    global game_state
+    game_state = state
 
-    # if x <= o, human's turn (human always goes first), return
-    if num_x <= num_o:
-        send_info('human turn')
-        return
-         
-    # it's the robot's turn -- decide where to go
-    move = select_move(state)
-    send_action(str(move))  # send the action to the /game_action topic
-
+def read_info(data):
+    info = str(data.data)
+    if info == "done moving":
+        global is_moving
+        is_moving = False
+        print("Now able to move game logic")
 
 # choose the next move given a game state
 def select_move(state):
@@ -74,6 +78,30 @@ def state_reader():
     GAME_ACTION_PUBLISHER = rospy.Publisher('game_action', String, queue_size=1)
 
     rospy.Subscriber('game_state', Int32MultiArray, read_state)  # set up the subscriber to /game_state
+    rospy.Subscriber('game_info', String, read_info)  # set up the subscriber to /game_info
+    
+    while True:
+        raw_input("Press ENTER for Robot's Turn")
+
+        # determine turn
+        num_blank = len([x for x in game_state if x == 0])
+        num_x = len([x for x in game_state if x == 1])
+        num_o = len([x for x in game_state if x == 2])
+
+        # if x <= o, human's turn (human always goes first), return
+        if num_x <= num_o:
+            send_info('human turn')
+            continue
+
+        # check if currently moving
+        if is_moving:
+            print("Cannot run, currently is_moving")
+            continue
+            
+        # it's the robot's turn -- decide where to go
+        move = select_move(game_state)
+        send_action(str(move))  # send the action to the /game_action topic
+    
     rospy.spin()  # wait for program to exit
 
 
