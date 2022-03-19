@@ -77,17 +77,17 @@ def pick_and_place(x, y):
 
     go_to_joint(home)   # Back to home position
 
-    go_to_joint(x)      # Hover above goal position
+    # go_to_joint(x)      # Hover above goal position
 
-    go_to_joint(y)      # Go to goal position
+    # go_to_joint(y)      # Go to goal position
 
-    # Gripper: open (drop X)
-    print('Releasing X')
-    move_gripper(1)
+    # # Gripper: open (drop X)
+    # print('Releasing X')
+    # move_gripper(1)
 
-    go_to_joint(x)      # Hover above goal position
+    # go_to_joint(x)      # Hover above goal position
 
-    go_to_joint(home)   # Take robot to home position 
+    # go_to_joint(home)   # Take robot to home position 
 
     return
 
