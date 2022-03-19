@@ -1,6 +1,7 @@
 import rospy
 
 from sensor_msgs.msg import Image
+from std_msgs.msg import Int32MultiArray
 from cv_bridge import CvBridge, CvBridgeError
 
 from vision import process_image
@@ -8,6 +9,7 @@ from vision import process_image
 cvBridge = CvBridge()
 
 # ADD PUBLISHER TO game_state
+marker_pub = rospy.Publisher('game_state', Int32MultiArray, queue_size=1)
 
 def callback(msg):
 
@@ -21,7 +23,12 @@ def callback(msg):
     # Call process_image function
     markers = process_image(cv_image)
 
+    # ROS message for markers
+    msg = Int32MultiArray()
+    msg.data = markers
+
     # PUBLISH MARKERS to game_state
+    marker_pub.publish(msg)
 
 if __name__ == '__main__':
     # Initialize ros node
