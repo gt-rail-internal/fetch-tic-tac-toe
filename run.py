@@ -111,7 +111,7 @@ def main():
     # rospy.Subscriber('game_action', String, callback, queue_size=1)
     # rospy.spin()
 
-    tile = str(2)
+    tile = str(3)
     pick_and_place(hover_joints[tile], goal_joints[tile])
 
 if __name__ == '__main__':
