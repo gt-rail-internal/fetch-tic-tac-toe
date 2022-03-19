@@ -7,6 +7,8 @@ from vision import process_image
 
 cvBridge = CvBridge()
 
+# ADD PUBLISHER TO game_state
+
 def callback(msg):
 
     # Convert rosmsg to opencv image
@@ -14,9 +16,12 @@ def callback(msg):
         cv_image = cvBridge.imgmsg_to_cv2(msg, "bgr8")
     except CvBridgeError as e:
         print(e)
+        return
 
     # Call process_image function
-    process_image(cv_image)
+    markers = process_image(cv_image)
+
+    # PUBLISH MARKERS to game_state
 
 if __name__ == '__main__':
     # Initialize ros node
