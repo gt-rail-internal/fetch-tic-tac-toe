@@ -1,10 +1,15 @@
+import argparse
+
 import rospy
 from sensor_msgs.msg import JointState
 
 JIDXS = [2, 6, 7, 8, 9, 10, 11, 12]
 
+def write_to_file(data, line, file):
+    with open('stats.txt', 'a') as file:
+        file.writelines(data)
 
-def return_joints():
+def return_joints(tile, type):
     msg = rospy.wait_for_message('joint_states', JointState)
 
     while len(msg.position) < 13:
@@ -12,9 +17,19 @@ def return_joints():
 
     joints = [msg.position[i] for i in JIDXS]
 
-    return joints
+    data = '{}: {}'.format(tile, joints)
+
+    write_to_file(data, tile, '{}_joints.txt'.format(type))
+
+    return 
 
 if __name__ == '__main__':
-        rospy.init_node('collect_joint_state')
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('tile', type=int, help='Tile Integer')
+    parser.add_argument('type', type=str, help='Type of position')
 
-        print(return_joints())
+    args = parser.parse_args()
+
+    rospy.init_node('collect_joint_state')
+
+    return_joints(args.tile, args.type)
