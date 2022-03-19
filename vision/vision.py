@@ -50,7 +50,8 @@ def process_image(img):
     # if not two black blobs, error a bit
     if len(locations) != 2:
         print("Not exactly two black blobs", len(locations))
-        cv2.imwrite("img_black.png", img_black)
+        cv2.imshow("img_black.png", img_black)
+        cv2.waitkey()
         return []
 
     # sort locations top down left right
