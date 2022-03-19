@@ -20,16 +20,10 @@ def process_image(img):
     img[:,:left_cut,:] = default_pixel
     img[:,right_cut:,:] = default_pixel
 
-    cv2.imwrite("cut.png", img)
+    #cv2.imwrite("cut.png", img)
     
     # ISOLATE BLACK DOTS, EMPTY LOCATIONS
     # threshold the HSV
-    # low_H = 90
-    # low_S = 60
-    # low_V = 20
-    # high_H = 120
-    # high_S = 255
-    # high_V = 70
     
     low_H = 90
     low_S = 60
@@ -55,16 +49,15 @@ def process_image(img):
     # sort locations top down left right
     locations = locations[np.lexsort((locations[:,1], locations[:,0]))]
 
-    cv2.imwrite("rgb.png", img_black)
+    #cv2.imwrite("rgb.png", img_black)
     # if not two black blobs, error a bit
     if len(locations) != 2:
         print("Not exactly two black blobs", len(locations))
-        
         return []
 
     
 
-    print("side coordinate markers", locations)
+    #print("side coordinate markers", locations)
 
     # generate the snap locations
     x_left = locations[0][0]
@@ -82,10 +75,10 @@ def process_image(img):
             snap_locations[idx][1] = y_top + (2*r+1) * y_iter
             idx += 1
 
-    print("snap locations", snap_locations)
+    #print("snap locations", snap_locations)
 
     empty_locations = locations
-    print("empty", empty_locations)
+    #print("empty", empty_locations)
 
     # ISOLATE BLUE X, X LOCATIONS
     # threshold the HSV
@@ -120,7 +113,7 @@ def process_image(img):
     locations = cv2.KeyPoint_convert(keypoints)
 
     x_locations = locations
-    print("x", x_locations)
+    #print("x", x_locations)
 
 
     # ISOLATE RED O, O LOCATIONS
@@ -156,10 +149,10 @@ def process_image(img):
     locations = cv2.KeyPoint_convert(keypoints)
 
     o_locations = locations
-    print("o", o_locations)
+    #print("o", o_locations)
 
     markers = determine_coordinates(snap_locations, x_locations, o_locations)
-    print("markers", markers)
+    #print("markers", markers)
     
 
     cv2.imwrite("base.png", img)
@@ -175,17 +168,8 @@ def determine_coordinates(snaps, x, o):
     if len(o) != 0:
         o = np.hstack((o, np.ones((o.shape[0],1)) * 2))
 
-    print("snaps", snaps)
-
-    # group coordinated by average values
-    #union = np.concatenate((empty, x, o), axis=0)
-    
-    threshold = 20
-    count = 0
-    max_count = 10
-
     # snap each x and o to closest point, count each at each location
-    snapped_locations = [[], [], [], [], [], [], [], [], []]
+    markers = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     if len(x) != 0:
         for ix in range(x.shape[0]):
@@ -193,72 +177,21 @@ def determine_coordinates(snaps, x, o):
             snap = -1
             for i in range(snaps.shape[0]):
                 dist = np.sqrt((x[ix][0] - snaps[i][0])**2 + (x[ix][1] - snaps[i][1])**2)
-                print(">>>", x[ix], snaps[i], "<<", dist)
-                
                 if dist < min_dist:
                     snap = i
                     min_dist = dist
-                    print("best")
-            print("X", x[ix], "snap", snap)
-            x[ix][0] = snaps[snap][0]
-            x[ix][1] = snaps[snap][1]
-            snapped_locations[snap].append("x" + str(ix))
-            print("new", x[ix])
-    
-    print("done with X snaps")
-
+            markers[snap] = 1
+            
     if len(o) != 0:
         for io in range(o.shape[0]):
             min_dist = float("inf")
             snap = -1
             for i in range(snaps.shape[0]):
                 dist = np.sqrt((o[io][0] - snaps[i][0])**2 + (o[io][1] - snaps[i][1])**2)
-                print(">>>", o[io], snaps[i], "<<", dist)
                 if dist < min_dist:
                     snap = i
                     min_dist = dist
-                    print("best")
-            print("O", o[io], "snap", snap, snaps[snap])
-            o[io][0] = snaps[snap][0]
-            o[io][1] = snaps[snap][1]
-            snapped_locations[snap].append("o" + str(io))
-            print("new", o[io])
-    
-    print("done with O snaps")
-
-    print("snapped locations", snapped_locations)
-
-    # check if any snap locations have more than one snap
-    for snap in snapped_locations:
-        if len(snap) > 1:  # if more than one item at that spot, choose one
-            print("two elements at one snap!")
-            return []
-    
-    # combine snap locations with X and O
-    union = snaps
-
-    if len(x) > 0:
-        union = np.concatenate((union, x), axis=0)
-    if len(o) > 0:
-        union = np.concatenate((union, o), axis=0)
-
-    print("union", union)
-
-    # convert to int
-    union = union.astype(int)
-
-    # sort
-    union = union[np.lexsort((union[:,2], union[:,1], union[:,0]))]
-    print("union2", union)
-
-    # remove duplicates
-    while True:
-        for i in range(union.shape[0]):
-
-
-
-    # pull markers
-    markers = list(union[:, 2])
+            markers[snap] = 2
 
     return markers
 
