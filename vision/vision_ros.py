@@ -3,7 +3,7 @@ import rospy
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
-from vision.vision import process_image
+from vision import process_image
 
 cvBridge = CvBridge()
 
