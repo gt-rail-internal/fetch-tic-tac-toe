@@ -4,7 +4,7 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import Int32MultiArray
 from cv_bridge import CvBridge, CvBridgeError
 
-# from vision import process_image
+from vision import process_image
 
 cvBridge = CvBridge()
 
@@ -21,7 +21,7 @@ def callback(msg):
         return
 
     # Call process_image function
-    markers = [0,0,0,1,1,1,2,2,2] #process_image(cv_image)
+    markers = process_image(cv_image)
 
     # ROS message for markers
     msg = Int32MultiArray()
