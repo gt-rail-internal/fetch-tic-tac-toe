@@ -47,11 +47,10 @@ def process_image(img):
     locations = cv2.KeyPoint_convert(keypoints)
     
     
-    cv2.imwrite("img_black.png", img_black)
-    
     # if not two black blobs, error a bit
     if len(locations) != 2:
         print("Not exactly two black blobs", len(locations))
+        cv2.imwrite("img_black.png", img_black)
         return []
 
     # sort locations top down left right
