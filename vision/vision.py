@@ -47,6 +47,7 @@ def process_image(img):
     locations = cv2.KeyPoint_convert(keypoints)
 
     # sort locations top down left right
+    print("locations", locations)
     locations = locations[np.lexsort((locations[:,1], locations[:,0]))]
 
     #cv2.imwrite("rgb.png", img_black)
