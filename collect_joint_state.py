@@ -5,9 +5,9 @@ from sensor_msgs.msg import JointState
 
 JIDXS = [2, 6, 7, 8, 9, 10, 11, 12]
 
-def write_to_file(data, line, file):
-    with open('stats.txt', 'a') as file:
-        file.writelines(data)
+def write_to_file(data, line, filename):
+    with open(filename, 'a') as file:
+        file.write(data+'\n')
 
 def return_joints(tile, type):
     msg = rospy.wait_for_message('joint_states', JointState)
@@ -25,8 +25,8 @@ def return_joints(tile, type):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('tile', type=int, help='Tile Integer')
-    parser.add_argument('type', type=str, help='Type of position')
+    parser.add_argument('-tile', type=int, help='Tile Integer')
+    parser.add_argument('-type', type=str, help='Type of position')
 
     args = parser.parse_args()
 
