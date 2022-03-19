@@ -196,5 +196,6 @@ def determine_coordinates(snaps, x, o):
     return markers
 
 if __name__ == "__main__":
-    img = cv2.imread("test2.png")
-    process_image(img)
+    #img = cv2.imread("test2.png")
+    #process_image(img)
+    pass
