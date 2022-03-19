@@ -116,16 +116,9 @@ def main():
     rospy.Subscriber('game_action', String, callback, queue_size=1)
     rospy.spin()
 
-<<<<<<< HEAD
     '''
     # Testing individual tile motions
     tile = str(3)
-=======
-    # rospy.Subscriber('game_action', String, callback, queue_size=1)
-    # rospy.spin()
-
-    tile = str(8)
->>>>>>> 1794cdffaf2ba74e8fafa5410f70297e3dfb9856
     pick_and_place(hover_joints[tile], goal_joints[tile])
     '''
 
