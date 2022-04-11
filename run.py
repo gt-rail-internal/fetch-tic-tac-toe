@@ -118,7 +118,7 @@ def callback(msg):
         pick_and_place(hover_joints[tile], goal_joints[tile])
 
     else:
-        raise KeyError
+        print(tile)
     print("done moving")
     send_info("done moving")
 

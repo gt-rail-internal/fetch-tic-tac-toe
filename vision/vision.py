@@ -2,6 +2,8 @@ from pickletools import unicodestringnl
 import cv2
 import numpy as np
 
+counter = 0
+global counter
 
 # processes an image into the gameboard vector
 def process_image(img):
@@ -106,13 +108,6 @@ def process_image(img):
 
     # ISOLATE BLUE X, X LOCATIONS
     # threshold the HSV
-    # low_H = 70
-    # low_S = 150
-    # low_V = 60
-    # high_H = 140
-    # high_S = 255
-    # high_V = 255
-
     low_B = 120
     low_G = 20
     low_R = 10
@@ -120,7 +115,6 @@ def process_image(img):
     high_G = 120
     high_R = 100
 
-    
     img_blue = cv2.inRange(img_bgr, (low_B, low_G, low_R), (high_B, high_G, high_R))
     
     # decay, expand
@@ -155,6 +149,7 @@ def process_image(img):
     locations = cv2.KeyPoint_convert(keypoints)
 
     x_locations = locations
+    #print("X Locations", x_locations)
 
     #print("areas", [k.size for k in keypoints])
     #print("x", x_locations)
@@ -207,7 +202,7 @@ def process_image(img):
 
     
     o_locations = locations
-    #print("o", o_locations)
+    #print("O Locations", o_locations)
 
     markers = determine_coordinates(snap_locations, x_locations, o_locations)
     #print("markers", markers)
@@ -241,7 +236,7 @@ def determine_coordinates(snaps, x, o):
                 if dist < min_dist:
                     snap = i
                     min_dist = dist
-            print("X", ix, "snap", snap, "dist", min_dist)
+            #print("X", ix, "snap", snap, "dist", min_dist)
             markers[snap] = 1
             
     if len(o) != 0:
